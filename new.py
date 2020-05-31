@@ -51,8 +51,10 @@ bbox_hydra = 77.7769,16.7221,79.1557,17.9332
 bbox_vija = 79.8204,16.0397,81.1992,17.2551
 bbox_patna = 84.0448,24.7575,86.1746,26.4275
 bbox_ahm = 73.3273,18.1127,77.1395,21.403
-aoi = bbox_ahm
-area = "ahm"
+bbox_nagpur = 76.85,19.49,80.66,22.75
+bbox_benga = 76.35,9.49,79.03,13.91
+aoi = bbox_benga
+area = "benga"
 '''
 2019 dataset = dates[0], dates[1]
 2020 dataset = dates[2], dates[3]
@@ -82,7 +84,11 @@ for i in range(2):
     cube = open_cube(cube_con, **hc)
     scl = MaskSet(cube.SCL) 
 
-    cube = cube.where((scl.clouds_high_probability) == 0) #shows weird errors
+    #cube = cube.where((scl.clouds_high_probability) == 0) #shows weird errors
+    
+    cube= cube.where((scl.clouds_high_probability +
+    scl.clouds_medium_probability +
+    scl.clouds_low_probability_or_unclassified +                                                                                scl.cirrus) == 0)
     date = dates[0]
     t1 = cube.sel(time = cube.time[0])
     B02 = t1.B02
